@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  engineers-app:
+    build:
+      context: ./
+      dockerfile: .dev.Dockerfile
+    container_name: engineers-app
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/app
+    networks:
+      - engineers-website
+
+  postgres:
+    image: postgres:9.6
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=website_development
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - engineers-website
+
+networks:
+  engineers-website:
+    driver: bridge
